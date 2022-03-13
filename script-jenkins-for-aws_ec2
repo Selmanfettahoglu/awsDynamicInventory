@@ -1,0 +1,17 @@
+APP_NAME="car-rental"
+
+CFN_KEYPAIR="car-rental-key.pem"
+
+PATH="$PATH:/usr/local/bin"
+
+export ANSIBLE_PRIVATE_KEY_FILE="${JENKINS_HOME}/.ssh/${CFN_KEYPAIR}"
+
+export ANSIBLE_HOST_KEY_CHECKING=False
+
+export APP_STACK_NAME="$APP_NAME-App-14"
+
+sed -i "s/APP_STACK_NAME/$APP_STACK_NAME/" ./ansible/inventory/dynamic_inventory_aws_ec2.yaml
+
+ansible -i ./ansible/inventory/dynamic_inventory_aws_ec2.yaml all -m ping
+
+ansible-inventory -v -i ./ansible/inventory/dynamic_inventory_aws_ec2.yaml --graph
